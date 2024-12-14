@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-function fixImports(dir) {
+function fixImports(dir: string) {
   const files = fs.readdirSync(dir);
   for (const file of files) {
     const fullPath = path.join(dir, file);
@@ -11,7 +11,7 @@ function fixImports(dir) {
       let content = fs.readFileSync(fullPath, 'utf8');
       
       // Replace relative imports that lack .js (but only if .js is not already in the path)
-      content = content.replace(/from '(\..*?)(?=')'/g, (match, p1) => {
+      content = content.replace(/from '(\..*?)(?=')'/g, (match: string, p1: string) => {
         if (!p1.endsWith('.js')) {
           return `from '${p1}.js'`;
         }
@@ -26,4 +26,4 @@ function fixImports(dir) {
   }
 }
 
-fixImports('../statsyviz/static/js'); // Adjust to your output directory
+fixImports('dist'); // Adjust to your output directory

@@ -16,6 +16,7 @@ export default class StatisticalDataSeries extends AbstractStatisticalDataSeries
     mean: number = NaN;
     median: number = NaN;
     sumOfSquares: number = NaN;
+    count: number = 0;
 
     constructor(public data: number[], public name?: string) { 
         super(true)
@@ -23,6 +24,7 @@ export default class StatisticalDataSeries extends AbstractStatisticalDataSeries
         this.calculateValues();
         (this as AbstractStatisticalDataSeries).isNumeric = true;
         (this as AbstractStatisticalDataSeries).isString = false;
+        this.count = this.data.length;
     }
 
     buckets: Bucket = {};
@@ -31,7 +33,6 @@ export default class StatisticalDataSeries extends AbstractStatisticalDataSeries
         let candidateModes: number[] = [];
         let candidateModeCount = 0;
         for (let i: number=0; i<this.data.length; i++) {
-            this.count ++;
             if (!isNaN(this.data[i])) {
                 this.sum += this.data[i];
                 if (!Object.keys(this.buckets).includes(this.data[i].toString())) {
@@ -51,7 +52,7 @@ export default class StatisticalDataSeries extends AbstractStatisticalDataSeries
         }
 
         this.mode = candidateModes;
-        this.mean = this.sum / this.count;
+        this.mean = this.sum / this.data.length;
 
         // median
         const sorted = Array.from(this.data).sort((a, b) => a - b);
