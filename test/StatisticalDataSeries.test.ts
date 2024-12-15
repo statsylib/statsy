@@ -1,4 +1,4 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries';
+import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
 import {expect, test} from '@jest/globals';
 
 test('count of [1,2,3] to be 3', () => {
@@ -65,12 +65,12 @@ test('median of [1,2,3] to be 2', () => {
 expect(new StatisticalDataSeries([1,2,3]).median).toEqual(2);
 });
 
-test('sumOfSquares of [44,55,6,666,111] to be 305289.2', () => {
-expect(new StatisticalDataSeries([44,55,6,666,111]).sumOfSquares).toEqual(305289.2);
+test('sumOfSquaredDeviationsFromMean of [44,55,6,666,111] to be 305289.2', () => {
+expect(new StatisticalDataSeries([44,55,6,666,111]).sumOfSquaredDeviationsFromMean).toEqual(305289.2);
 });
 
-test('sumOfSquares of [11,22,33,44,55] to be 1210', () => {
-expect(new StatisticalDataSeries([11,22,33,44,55]).sumOfSquares).toEqual(1210);
+test('sumOfSquaredDeviationsFromMean of [11,22,33,44,55] to be 1210', () => {
+expect(new StatisticalDataSeries([11,22,33,44,55]).sumOfSquaredDeviationsFromMean).toEqual(1210);
 });
 
 test('sample variance of [44,55,6,666,111] to be 76322.3', () => {

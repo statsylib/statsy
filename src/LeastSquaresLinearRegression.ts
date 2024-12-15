@@ -1,13 +1,19 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries';
-import StatisticalDataSet from '../src/StatisticalDataSet';
-import LinearRegression from '../src/LinearRegression';
-import RegressionLine from '../src/RegressionLine';
+import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
+import LinearRegression from '../src/LinearRegression.ts';
+import RegressionLine from '../src/RegressionLine.ts';
 
+/**
+ * Implements the least squares method of calculating a linear regression line from a 
+ * {@linkcode StatisticalDataSet} as described in {@link https://en.wikipedia.org/wiki/Linear_least_squares}.
+ */
 export default class LeastSquaresLinearRegression extends LinearRegression {
-    constructor(dataset: StatisticalDataSet) {
-        super(dataset)
-    }
 
+    /**
+     * Fit the least squares line to the given dataset.  
+     * @param varX The x axis variable name to be found in the data set.
+     * @param varY The y axis variable name to be found in the data set.
+     * @returns A {@linkcode RegressionLine} object with the properties of computed regression line.
+     */
     fit(varX: string, varY: string): RegressionLine {
         let [numerator,denominator] = [0,0,0,0];
         const xSeries: StatisticalDataSeries = (this as LinearRegression).dataset.series(varX) as StatisticalDataSeries;

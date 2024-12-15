@@ -1,5 +1,5 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries';
-import StatisticalDataSet from '../src/StatisticalDataSet';
+import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
+import StatisticalDataSet from '../src/StatisticalDataSet.ts';
 import {expect, test} from '@jest/globals';
 
 test('count of inner series elements val1', () => {
@@ -66,7 +66,6 @@ test('maxKeyValue other simple case', () => {
     const dataset = new StatisticalDataSet(data);
     expect(dataset.maxKeyValue('val2')).toBe(50);
 });
-
 
 test('minKeyValue simple case', () => {
     const data = [{"val1": 5,"val2": 40},{"val1": 11,"val2": 20}];

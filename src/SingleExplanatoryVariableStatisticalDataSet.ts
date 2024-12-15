@@ -1,5 +1,9 @@
-import { default as StatisticalDataSet } from './StatisticalDataSet';
+import { default as StatisticalDataSet } from './StatisticalDataSet.ts';
 
+/**
+ * A {@linkcode StatisticalDataSet} with a single explanatory variable, a dependent variable
+ * and hints for which is which.
+ */
 export default class SingleExplanatoryVariableStatisticalDataSet extends StatisticalDataSet {
     explanatory_variable_name: string = '';
     constructor(data: any) {
