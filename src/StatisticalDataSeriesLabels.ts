@@ -1,9 +1,9 @@
-import AbstractStatisticalDataSeries from '../src/AbstractStatisticalDataSeries.ts';
+import { AbstractStatisticalDataSeries } from '../src/AbstractStatisticalDataSeries.ts';
 
 /**
  * A series of strings, usually to accompany a series of numbers in a {@linkcode StatisticalDataSeries}.
  */
-export default class StatisticalDataSeriesLabels extends AbstractStatisticalDataSeries {
+export class StatisticalDataSeriesLabels extends AbstractStatisticalDataSeries {
 
     /**
      * Constructs a new instance.

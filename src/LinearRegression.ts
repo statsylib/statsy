@@ -1,10 +1,10 @@
-import StatisticalDataSet from '../src/StatisticalDataSet.ts';
+import { StatisticalDataSet } from '../src/StatisticalDataSet.ts';
 
 /**
  * A common ancestor to all implementations of linear regressions, such as
  * {@linkcode LeastSquaresLinearRegression} for example.
  */
-export default class LinearRegression {
+export class LinearRegression {
 
     /**
      * Construct a new instance.

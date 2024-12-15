@@ -1,12 +1,12 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
-import LinearRegression from '../src/LinearRegression.ts';
-import RegressionLine from '../src/RegressionLine.ts';
+import { StatisticalDataSeries } from '../src/StatisticalDataSeries.ts';
+import { LinearRegression } from '../src/LinearRegression.ts';
+import { RegressionLine } from '../src/RegressionLine.ts';
 
 /**
  * Implements the least squares method of calculating a linear regression line from a 
  * {@linkcode StatisticalDataSet} as described in {@link https://en.wikipedia.org/wiki/Linear_least_squares}.
  */
-export default class LeastSquaresLinearRegression extends LinearRegression {
+export class LeastSquaresLinearRegression extends LinearRegression {
 
     /**
      * Fit the least squares line to the given dataset.  

@@ -1,4 +1,4 @@
-import AbstractStatisticalDataSeries from '../src/AbstractStatisticalDataSeries.ts';
+import { AbstractStatisticalDataSeries } from '../src/AbstractStatisticalDataSeries.ts';
 
 /**
  * Holds a number of numbers.  Used to count how many of each number appears
@@ -12,7 +12,7 @@ interface Bucket {
  * A series of numbers on which a variety of descriptive statistics attributes 
  * will be calculated.
  */
-export default class StatisticalDataSeries extends AbstractStatisticalDataSeries {
+export class StatisticalDataSeries extends AbstractStatisticalDataSeries {
     /**
      * The sum of all the elements in the series.
      */ 

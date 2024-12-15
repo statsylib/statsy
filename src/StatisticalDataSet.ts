@@ -1,8 +1,8 @@
-import AbstractStatisticalDataSeries from '../src/AbstractStatisticalDataSeries.ts';
-import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
-import StatisticalDataSeriesLabels from '../src/StatisticalDataSeriesLabels.ts';
-import LeastSquaresLinearRegression from '../src/LeastSquaresLinearRegression.ts';
-import RegressionLine from '../src/RegressionLine.ts';
+import { AbstractStatisticalDataSeries } from '../src/AbstractStatisticalDataSeries.ts';
+import { StatisticalDataSeries } from '../src/StatisticalDataSeries.ts';
+import { StatisticalDataSeriesLabels } from '../src/StatisticalDataSeriesLabels.ts';
+import { LeastSquaresLinearRegression } from '../src/LeastSquaresLinearRegression.ts';
+import { RegressionLine } from '../src/RegressionLine.ts';
 /**
  * A dataset consisting of multiple {@linkcode StatisticalDataSeries} and possibly some loading hints.
  * The data is an array of observations with an optional label and a series of measurements.  This array 
@@ -54,7 +54,7 @@ import RegressionLine from '../src/RegressionLine.ts';
  * }
  * ```
  */
-export default class StatisticalDataSet {
+export class StatisticalDataSet {
     public metadata: string[] = [];
     public label_name: string = 'label';
     public label_name_hint_name: string = 'label_name';
