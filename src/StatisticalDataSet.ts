@@ -2,6 +2,7 @@ import AbstractStatisticalDataSeries from '../src/AbstractStatisticalDataSeries'
 import StatisticalDataSeries from '../src/StatisticalDataSeries';
 import StatisticalDataSeriesLabels from '../src/StatisticalDataSeriesLabels';
 import LeastSquaresLinearRegression from '../src/LeastSquaresLinearRegression';
+import RegressionLine from '../src/RegressionLine';
 
 export default class StatisticalDataSet {
     public metadata: string[] = [];
@@ -29,14 +30,14 @@ export default class StatisticalDataSet {
         this.isUniform = this.checkIsUniform();
     }
 
-    public getDependentVariableName() {
+    public getDependentVariableName(): string {
         return this.dependent_variable_name;
     }
     public setDependentVariableName(dependent_variable_name: string) {
         this.dependent_variable_name = dependent_variable_name;
     }
 
-    public getExplanatoryValueName() {
+    public getExplanatoryValueName(): string {
         return this.explanatory_value_name;
     }
     public setExplanatoryValueName(explanatory_value_name: string) {
@@ -72,7 +73,7 @@ export default class StatisticalDataSet {
         }
     }
 
-    numericalSeries() {
+    numericalSeries(): AbstractStatisticalDataSeries[] {
         if (!this.isUniform) return [];
         const keys = {};
         const ret: StatisticalDataSeries[] = [];
@@ -91,7 +92,7 @@ export default class StatisticalDataSet {
         return ret;
     }
 
-    stringSeries() {
+    stringSeries(): AbstractStatisticalDataSeries[] {
         if (!this.isUniform) return [];
         const keys = {};
         const ret: StatisticalDataSeriesLabels[] = [];
@@ -141,7 +142,7 @@ export default class StatisticalDataSet {
         this.max_explanatory_value = this.maxKeyValue(this.explanatory_value_name);
     }
 
-    maxKeyValue(key: string) {
+    maxKeyValue(key: string): number {
         let ret: number = 0;
         for (let i: number=0; i<this.data.length; i++) {
             if ((this.data as any)[i][key] > ret) {
@@ -151,7 +152,7 @@ export default class StatisticalDataSet {
         return ret;
     }
 
-    minKeyValue(key: string) {
+    minKeyValue(key: string): number {
         let ret: number = Number.MAX_SAFE_INTEGER;
         for (let i: number=0; i<this.data.length; i++) {
             if ((this.data as any)[i][key] < ret) {
@@ -161,7 +162,7 @@ export default class StatisticalDataSet {
         return ret;
     }
 
-    leastSquaresRegression(varX: string, varY: string) {
+    leastSquaresRegression(varX: string, varY: string): RegressionLine {
         const regression: LeastSquaresLinearRegression = new LeastSquaresLinearRegression(this);
         return regression.fit(varX, varY);
     }
@@ -173,7 +174,7 @@ export default class StatisticalDataSet {
      * @param {*} varY the name of the key of the second value
      * @returns the correlation coefficient of the two variables
      */
-    correlationCoefficient(varX: string, varY: string) {
+    correlationCoefficient(varX: string, varY: string): number {
         if (!this.isUniform) throw new Error('Dataset is not uniform.  Unable to calculate coefficient.');
         if (!Array.isArray(this.data) || this.data.length < 2) {
             throw new Error("Data must be an array with at least two elements.");

@@ -4,7 +4,6 @@ export default class DualAdditiveExplanatoryVariableStatisticalDataSet extends S
     optimal_explanation_ratio: number = 0;
     explanatory_variable_name_1: string = '';
     explanatory_variable_name_2: string = '';
-    explanatory_value_name: string = '';
     
     constructor(data: any) {
         super(data)

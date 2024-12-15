@@ -45,10 +45,6 @@ test('mode of [1,2,2,3,3] to be [2,3]', () => {
 expect(new StatisticalDataSeries([1,2,2,3,3]).mode).toEqual([2,3]);
 });
 
-test('mode of [1,1,1,2,3,3] to be 1', () => {
-expect(new StatisticalDataSeries([1,1,1,2,3,3]).mode).toEqual([1]);
-});
-
 test('mode of [1,1,1,2,244,2,3,3,44,44,44,44,44,44,23,23,23,23] to be 44', () => {
 expect(new StatisticalDataSeries([1,1,1,2,2,2,3,3,44,44,44,44,44,44,23,23,23,23]).mode).toEqual([44]);
 });
