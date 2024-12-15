@@ -1,4 +1,4 @@
-import StatisticalDataSet from '../src/StatisticalDataSet';
+import StatisticalDataSet from '../src/StatisticalDataSet.ts';
 
 /**
  * A common ancestor to all implementations of linear regressions, such as
