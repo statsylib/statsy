@@ -1,5 +1,6 @@
-import { StatisticalDataSet } from './StatisticalDataSet.ts';
-import { SingleExplanatoryVariableStatisticalDataSet } from './SingleExplanatoryVariableStatisticalDataSet.ts';
+import type { StatisticalDataSet } from './StatisticalDataSet.ts';
+import type { SingleExplanatoryVariableStatisticalDataSet } from './SingleExplanatoryVariableStatisticalDataSet.ts';
+
 
 /**
  * Draws a two dimensional chart on the given context with the given datapoints and a linear regression line.
@@ -24,32 +25,32 @@ export class SingleExplanatoryVariableCorrelationChart {
 
     textFontSize: number = 20;
 
-    constructor(public context: CanvasRenderingContext2D, public dataset: StatisticalDataSet) {
+    constructor(public context: any, public dataset: StatisticalDataSet) {
         this.context = context;
         this.dataset = dataset;
     }
 
-    to_screen_height_units(value: number) {
+    toScreenHeightUnits(value: number): number {
         return this.context.canvas.height - this.#yPadding - (value * (this.context.canvas.height - (this.#yPadding*2)) / this.dataset.max_dependent_variable_value);
     }
 
-    from_screen_height_units(value: number) {
+    fromScreenHeightUnits(value: number): number {
         return value * this.dataset.max_dependent_variable_value / (this.context.canvas.height - (this.#yPadding*2));
     }
 
-    to_screen_width_units(value: number) {
+    toScreenWidthUnits(value: number): number {
         return this.#xPadding + (value * (this.context.canvas.width - (this.#xPadding*2)) / this.dataset.max_explanatory_value);
     }
 
-    from_screen_width_units(value: number) {
+    fromScreenWidthUnits(value: number): number {
         return value * this.dataset.max_explanatory_value / (this.context.canvas.width - (this.#xPadding*2));
     }
 
     drawDataPoints() {
         if (this.dataset) {
             for (let i: number = 0; i < this.dataset.data.length; i++) {
-                const xValue = this.to_screen_width_units(this.dataset.data[i][this.dataset.explanatory_value_name]);
-                const yValue = this.to_screen_height_units(this.dataset.data[i][this.dataset.dependent_variable_name]);
+                const xValue = this.toScreenWidthUnits(this.dataset.data[i][this.dataset.explanatory_value_name]);
+                const yValue = this.toScreenHeightUnits(this.dataset.data[i][this.dataset.dependent_variable_name]);
                 this.drawCircle(xValue, yValue, 5, 'white')
             }
         } else {
@@ -69,10 +70,10 @@ export class SingleExplanatoryVariableCorrelationChart {
 
     drawLeastSquaresFitLine(varX: string, varY: string) {
         const regression = this.dataset.leastSquaresRegression(varX, varY);
-        const leastSquaresX1 = this.to_screen_width_units(this.dataset.minKeyValue(this.dataset.explanatory_value_name));
-        const leastSquaresY1 = this.to_screen_height_units(regression.m * this.dataset.minKeyValue(this.dataset.explanatory_value_name) + regression.b);
-        const leastSquaresX2 = this.to_screen_width_units(this.dataset.max_explanatory_value);
-        const leastSquaresY2 = this.to_screen_height_units(regression.m * this.dataset.max_explanatory_value + regression.b);
+        const leastSquaresX1 = this.toScreenWidthUnits(this.dataset.minKeyValue(this.dataset.explanatory_value_name));
+        const leastSquaresY1 = this.toScreenHeightUnits(regression.m * this.dataset.minKeyValue(this.dataset.explanatory_value_name) + regression.b);
+        const leastSquaresX2 = this.toScreenWidthUnits(this.dataset.max_explanatory_value);
+        const leastSquaresY2 = this.toScreenHeightUnits(regression.m * this.dataset.max_explanatory_value + regression.b);
         this.drawLine(leastSquaresX1, leastSquaresY1, leastSquaresX2, leastSquaresY2, 'red', 2);
     }
 
