@@ -4,7 +4,7 @@ import { SingleExplanatoryVariableStatisticalDataSet } from './SingleExplanatory
 /**
  * Draws a two dimensional chart on the given context with the given datapoints and a linear regression line.
  */
-class SingleExplanatoryVariableCorrelationChart {
+export class SingleExplanatoryVariableCorrelationChart {
 
     /**
      * The size of the border on the left and right of the chart where nothing will be drawn except 
