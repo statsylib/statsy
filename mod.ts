@@ -6,3 +6,4 @@ export * from './src/StatisticalDataSeries.ts';
 export * from './src/StatisticalDataSeriesLabels.ts';
 export * from './src/StatisticalDataSet.ts';
 export * from './src/SingleExplanatoryVariableStatisticalDataSet.ts';
+export * from './src/SingleExplanatoryVariableCorrelationChart.ts';
