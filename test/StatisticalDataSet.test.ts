@@ -1,6 +1,6 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
-import StatisticalDataSet from '../src/StatisticalDataSet.ts';
-import {expect, test} from '@jest/globals';
+import { StatisticalDataSeries } from '../src/StatisticalDataSeries.ts';
+import { StatisticalDataSet } from '../src/StatisticalDataSet.ts';
+import { expect, test } from '@jest/globals';
 
 test('count of inner series elements val1', () => {
     const data = [{"val1": 11,"val2": 22},{"val1": 11,"val2": 22}];

@@ -5,12 +5,21 @@
 export class RegressionLine {
 
     /**
+     * The slope of the line.
+     */
+    m: number;
+
+    /**
+     * The y intercept of the line.
+     */
+    b: number;
+    /**
      * Construct a new instance
      * 
      * @param m The slope of the line.
      * @param b The y intercept of the line.
      */
-    constructor(public m: number, public b: number) {
+    constructor(m: number, b: number) {
         this.m = m;
         this.b = b;
     }

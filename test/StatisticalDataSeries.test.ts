@@ -1,5 +1,5 @@
-import StatisticalDataSeries from '../src/StatisticalDataSeries.ts';
-import {expect, test} from '@jest/globals';
+import { StatisticalDataSeries } from '../src/StatisticalDataSeries.ts';
+import { expect, test } from '@jest/globals';
 
 test('count of [1,2,3] to be 3', () => {
     expect(new StatisticalDataSeries([1,2,3]).count).toBe(3);
