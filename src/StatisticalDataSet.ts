@@ -229,10 +229,23 @@ export class StatisticalDataSet {
      * 
      * @param index The zero based index of the element to decrease within the series.
      * @param key The key of the series containing the element to decrease.
-     * @param delta The amount to be removed from the value of the element.
+     * @param delta The amount to be removed from the value of the data point.
      */
     decreaseDataPoint(index: number, key: string, delta: number) {
         (this.data as any)[index][key] -= delta;
+        this.max_dependent_variable_value = this.maxKeyValue(this.dependent_variable_name);
+        this.max_explanatory_value = this.maxKeyValue(this.explanatory_value_name);
+    }
+
+    /**
+     * Set one of the data point in a series to a given value.
+     * 
+     * @param index The zero based index of the element to decrease within the series.
+     * @param key The key of the series containing the element to decrease.
+     * @param value The new value of the data point.
+     */
+    setDataPoint(index: number, key: string, value: number) {
+        (this.data as any)[index][key] = value;
         this.max_dependent_variable_value = this.maxKeyValue(this.dependent_variable_name);
         this.max_explanatory_value = this.maxKeyValue(this.explanatory_value_name);
     }
