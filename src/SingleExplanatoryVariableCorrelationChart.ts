@@ -1,7 +1,7 @@
 import { StatisticalDataSet } from './StatisticalDataSet.ts';
 import { SingleExplanatoryVariableStatisticalDataSet } from './SingleExplanatoryVariableStatisticalDataSet.ts';
 
-class SingleExplanatoryVariableCorrelationChart {
+export class SingleExplanatoryVariableCorrelationChart {
 
     /**
      * The size of the border on the left and right of the chart where nothing will be drawn except 
