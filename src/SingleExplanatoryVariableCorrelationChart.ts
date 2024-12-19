@@ -22,38 +22,83 @@ class SingleExplanatoryVariableCorrelationChart {
     textFontSize: number = 20;
 
     dataPointRadius: number = 5;
+
+    mouseIsDown: boolean = false;
+    mouseDownX: number = 0;
+    mouseDownY: number = 0;
+    isDraggingPoint: boolean = false;
+    draggingPointIndex: number = NaN;
   
     constructor(public context: any, public dataset: StatisticalDataSet) {
         this.context = context;
         this.dataset = dataset;
-  
-        console.log('attempting to add mous event listener on canvas');
-        context.canvas.addEventListener('click', this.onClick.bind(this));
         context.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+        context.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+        context.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
+        context.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
     }
 
     onMouseDown(event: any) {
-        console.log('mouse down');
+        this.mouseIsDown = true;
+        const canvasBoundingRect = this.context.canvas.getBoundingClientRect();
+        const x = event.pageX - canvasBoundingRect.left;
+        const y = event.pageY - canvasBoundingRect.top;
+        this.mouseDownX = x;
+        this.mouseDownY = y;
     }
 
-    onClick(event: any) {
+    onMouseMove(event: any) {
         const canvasBoundingRect = this.context.canvas.getBoundingClientRect();
         const x = event.pageX - canvasBoundingRect.left;
         const y = event.pageY - canvasBoundingRect.top;
         const dataX = this.fromScreenWidthUnits(x);
-        const dataY = this.fromScreenHeightUnits(y)
-        this.drawCircle(x, y, this.dataPointRadius / 2, 'yellow');
-        //console.log('adjusted values at (' + x + ',' + y + ')');
-        //console.log('data values at click at (' + dataX + ',' + dataY + ')');
-        if (this.dataset) {
-            for (let i: number = 0; i < this.dataset.data.length; i++) {
-                const distance = Math.sqrt((dataX - this.dataset.data[i][this.dataset.explanatory_value_name]) ** 2 + (dataY - this.dataset.data[i][this.dataset.dependent_variable_name]) ** 2);
-                //console.log('distance: ' + distance);
-                if (distance <= (this.dataPointRadius * 5)) {
-                    console.log('you got a circle at (' + x + ',' + y + ')');
+        const dataY = this.fromScreenHeightUnits(y);
+        if (this.mouseIsDown) {
+            this.draw();
+            if (this.dataset) {
+                if (this.isDraggingPoint) {
+                    this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
+                    this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
+                    this.draw();
+                } else {
+                    for (let i: number = 0; i < this.dataset.data.length; i++) {
+                        const distance = Math.sqrt((dataX - this.dataset.data[i][this.dataset.explanatory_value_name]) ** 2 + (dataY - this.dataset.data[i][this.dataset.dependent_variable_name]) ** 2);
+                        if (distance <= (this.dataPointRadius * 5)) {
+                            console.log('you got a circle at (' + x + ',' + y + ')');
+                            this.isDraggingPoint = true;
+                            this.draggingPointIndex = i;
+                        }
+                    }
                 }
             }
         }
+    }
+
+    onMouseUp(event: any) {
+        this.mouseIsDown = false;
+        const canvasBoundingRect = this.context.canvas.getBoundingClientRect();
+        const x = event.pageX - canvasBoundingRect.left;
+        const y = event.pageY - canvasBoundingRect.top;
+        const dataX = this.fromScreenWidthUnits(x);
+        const dataY = this.fromScreenHeightUnits(y);
+        if (this.isDraggingPoint) {
+            this.isDraggingPoint = false;
+            this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
+            this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
+            this.draw();
+        }
+    }
+
+    onMouseOut(event: any) {
+        if (this.isDraggingPoint) {
+            const dataX = this.fromScreenWidthUnits(this.mouseDownX);
+            const dataY = this.fromScreenHeightUnits(this.mouseDownY);
+            this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
+            this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
+        }
+        this.draw();
+        this.mouseIsDown = false;
+        this.isDraggingPoint = false;
     }
 
     toScreenHeightUnits(value: number): number {
@@ -168,4 +213,12 @@ class SingleExplanatoryVariableCorrelationChart {
         this.context.fillText(text, 0, fontSize / 2);
         this.context.restore();
     }
-  }
+
+    draw() {
+        this.drawSolidRectangle(0, 0, this.context.canvas.width, this.context.canvas.height, 'black');
+        this.drawAxes();
+        this.drawDataPoints();
+        this.drawLeastSquaresFitLine(this.dataset.explanatory_value_name, this.dataset.dependent_variable_name);
+        this.drawCorrelationCoefficient(this.dataset.explanatory_value_name, this.dataset.dependent_variable_name);
+    }
+}
