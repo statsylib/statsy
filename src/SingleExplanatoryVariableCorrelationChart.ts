@@ -21,7 +21,7 @@ export class SingleExplanatoryVariableCorrelationChart {
   
     textFontSize: number = 20;
 
-    dataPointRadius: number = 5;
+    dataPointRadius: number = 7;
 
     mouseIsDown: boolean = false;
     mouseDownX: number = 0;
@@ -36,6 +36,12 @@ export class SingleExplanatoryVariableCorrelationChart {
         context.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
         context.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
         context.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
+        context.canvas.width  = context.canvas.offsetWidth;
+        context.canvas.height = context.canvas.offsetHeight;
+        this.draw();
+        // For some reason, the first draw has the y axis label offset a bit and it 
+        // settles to a permanent location after the second draw...
+        this.draw();  
     }
 
     onMouseDown(event: any) {
@@ -48,29 +54,39 @@ export class SingleExplanatoryVariableCorrelationChart {
     }
 
     onMouseMove(event: any) {
+        const pointerHand = "pointer";
         const canvasBoundingRect = this.context.canvas.getBoundingClientRect();
         const x = event.pageX - canvasBoundingRect.left;
         const y = event.pageY - canvasBoundingRect.top;
         const dataX = this.fromScreenWidthUnits(x);
         const dataY = this.fromScreenHeightUnits(y);
-        if (this.mouseIsDown) {
-            this.draw();
-            if (this.dataset) {
-                if (this.isDraggingPoint) {
-                    this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
-                    this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
-                    this.draw();
-                } else {
-                    for (let i: number = 0; i < this.dataset.data.length; i++) {
-                        const distance = Math.sqrt((dataX - this.dataset.data[i][this.dataset.explanatory_value_name]) ** 2 + (dataY - this.dataset.data[i][this.dataset.dependent_variable_name]) ** 2);
-                        if (distance <= (this.dataPointRadius * 5)) {
-                            console.log('you got a circle at (' + x + ',' + y + ')');
-                            this.isDraggingPoint = true;
-                            this.draggingPointIndex = i;
-                        }
-                    }
+        let mouseOverPointIndex = NaN;
+        if (this.dataset) {
+            for (let i: number = 0; i < this.dataset.data.length; i++) {
+                const distance = Math.sqrt((dataX - this.dataset.data[i][this.dataset.explanatory_value_name]) ** 2 + (dataY - this.dataset.data[i][this.dataset.dependent_variable_name]) ** 2);
+                if (distance <= (this.dataPointRadius * 20)) {
+                    console.log('you got a circle at (' + x + ',' + y + ')');
+                    mouseOverPointIndex = i;
+                    this.context.canvas.style.cursor = pointerHand;
+                    break;
                 }
             }
+        }
+        if (this.mouseIsDown) {
+            this.draw();
+            if (this.isDraggingPoint) {
+                this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
+                this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
+                this.draw();
+            } else {
+                if (!isNaN(mouseOverPointIndex)) {
+                    this.isDraggingPoint = true;
+                    this.draggingPointIndex = mouseOverPointIndex;    
+                }
+            }
+        }
+        if ((!this.isDraggingPoint) && (isNaN(mouseOverPointIndex))) {
+            this.context.canvas.style.cursor = 'default';
         }
     }
 
@@ -85,8 +101,9 @@ export class SingleExplanatoryVariableCorrelationChart {
             this.isDraggingPoint = false;
             this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
             this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
-            this.draw();
+            this.context.canvas.style.cursor = 'default';
         }
+        this.draw();
     }
 
     onMouseOut(event: any) {
@@ -96,6 +113,7 @@ export class SingleExplanatoryVariableCorrelationChart {
             this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getExplanatoryValueName(), dataX);
             this.dataset.setDataPoint(this.draggingPointIndex, this.dataset.getDependentVariableName(), dataY);
         }
+        this.context.canvas.style.cursor = 'default';
         this.draw();
         this.mouseIsDown = false;
         this.isDraggingPoint = false;
