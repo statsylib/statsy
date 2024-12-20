@@ -7,13 +7,13 @@ export class SingleExplanatoryVariableCorrelationChart {
      * The size of the border on the left and right of the chart where nothing will be drawn except 
      * for the labels.
      */
-    xBorder: number = 10;
+    xBorder: number = 20;
   
     /**
      * The size of the border on the top and bottom of the chart where nothing will be drawn except 
      * for the labels.
      */
-    yBorder: number = 40;
+    yBorder: number = 30;
   
     #labelTextHeight: number = 20;
     #xPadding: number = this.xBorder + this.#labelTextHeight;
@@ -39,9 +39,6 @@ export class SingleExplanatoryVariableCorrelationChart {
         context.canvas.width  = context.canvas.offsetWidth;
         context.canvas.height = context.canvas.offsetHeight;
         this.draw();
-        // For some reason, the first draw has the y axis label offset a bit and it 
-        // settles to a permanent location after the second draw...
-        this.draw();  
     }
 
     onMouseDown(event: any) {
@@ -152,7 +149,6 @@ export class SingleExplanatoryVariableCorrelationChart {
     }
   
     drawAxes() {
-        this.drawSolidRectangle(0,0,this.context.canvas.width, this.context.canvas.height, 'black')
         this.drawLine(this.#xPadding, this.context.canvas.height - this.#yPadding, this.context.canvas.width - this.#xPadding, this.context.canvas.height - this.#yPadding, 'white', 2);
         this.drawLine(this.#xPadding, this.context.canvas.height - this.#yPadding, this.#xPadding, this.yBorder, 'white', 2);
         if (this.dataset && this.dataset.dependent_variable_name && this.dataset.getExplanatoryValueName()) {
@@ -207,24 +203,24 @@ export class SingleExplanatoryVariableCorrelationChart {
     }
   
     drawCenteredHorizontalText(x1: number, y1: number, x2: number, y2: number, text: string, fontSize: number, color: string) {
+        this.context.font = fontSize + "px arial";
         const measurement = this.context.measureText(text);
         const textWidth = measurement.width;
         const textHeight = measurement.fontBoundingBoxAscent - measurement.fontBoundingBoxDescent;
         const textX = ((x2 - x1) / 2) - (textWidth / 2);
         const textY = y1 - ((y1 - y2 - textHeight) / 2);
         this.context.fillStyle = color;
-        this.context.font = fontSize + "px arial";
         this.context.fillText(text, textX, textY);
     }
   
     drawCenteredVerticalText(x1: number, y1: number, x2: number, y2: number, text: string, fontSize: number, color: string) {
+        this.context.font = fontSize + "px arial";
         const measurement = this.context.measureText(text);
         const textWidth = measurement.width;
         const textHeight = measurement.fontBoundingBoxAscent - measurement.fontBoundingBoxDescent;
         const textX = x1 + ((x2 - x1 - textHeight) / 2);
         const textY = y1 - ((y1 - y2 - textWidth) / 2);
         this.context.fillStyle = color;
-        this.context.font = fontSize + "px arial";
         this.context.save();
         this.context.translate(textX, textY);
         this.context.rotate(270 * Math.PI / 180);
